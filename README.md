@@ -4,6 +4,7 @@ A Dockerized local install of Kibana that can be used to connect to an ObjectRoc
 ## Requirements
 
 docker
+
 docker-compose
 
 ## Setup
@@ -14,9 +15,9 @@ First clone this repo to your local machine
 
 In the newly cloned repo, the Kibana configuration file is ``local-kibana/kibana/config/kibana.yml``. You'll need to update the included version with:
 
-- One of the https connection strings (NOT the provided Kibana string) in the ObjectRocket UI
-- A Username and password as configured in the ObjectRocket UI
-- Any other kibana settings you'd like to tweak (like a different kibana.index)
+- `elasticsearch.url` : One of the https connection strings (NOT the provided Kibana string) from the ObjectRocket UI
+- `elasticsearch.username` : A Username and password as configured in the ObjectRocket UI
+- `elasticsearch.password` : Any other kibana settings you'd like to tweak (like a different kibana.index)
 
 > Kibana can only accept a single host for the elasticsearch url. It is not able to round-robin, like other elasticsearch clients, so you'll need to take the list of hosts provided in the ObjectRocket UI and select only one host to use for the local Kibana instance.
 
