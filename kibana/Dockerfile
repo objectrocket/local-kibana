@@ -5,4 +5,4 @@ FROM docker.elastic.co/kibana/kibana:5.4.3
 RUN kibana-plugin remove x-pack
 
 # Install other plugins with
-# RUN kibana-plugin install
+# RUN kibana-plugin install <name|url>
