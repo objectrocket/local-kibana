@@ -3,9 +3,8 @@ A Dockerized local install of Kibana that can be used to connect to an ObjectRoc
 
 ## Requirements
 
-docker
-
-docker-compose
+* docker version **1.10.0+**
+* docker-compose version **1.6.0+**
 
 ## Setup
 
@@ -57,6 +56,18 @@ By default, and on the ObjectRocket service, Kibana stores all of its data in an
 
 ```
   kibana.index: "yourkibanaindexname"
+```
+
+If creating a different kibana index you will need to create an index pattern. This can be done in the UI or with the command line using the following:
+```bash
+$ curl -XPUT -D- 'http://localhost:9200/.yourkibanaindexname/index-pattern/logstash-*' \
+    -H 'Content-Type: application/json' \
+    -d '{"title" : "logstash-*", "timeFieldName": "@timestamp", "notExpandable": true}'
+```
+```bash
+$ curl -XPUT -D- 'http://localhost:9200/.yourkibanaindexname/config/5.4.1' \
+    -H 'Content-Type: application/json' \
+    -d '{"defaultIndex": "logstash-*"}'
 ```
 
 ## Shutting down Kibana
