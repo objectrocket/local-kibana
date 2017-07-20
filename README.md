@@ -20,6 +20,24 @@ In the newly cloned repo, the Kibana configuration file is ``local-kibana/kibana
 
 > Kibana can only accept a single host for the elasticsearch url. It is not able to round-robin, like other elasticsearch clients, so you'll need to take the list of hosts provided in the ObjectRocket UI and select only one host to use for the local Kibana instance.
 
+### Kibana Version
+
+The default version of Kibana used in the repo is 5.4.3. If you're using a different/non-compatible version of Elasticsearch, you can change to the appropriate version by editing the ``Dockerfile`` in ``local-kibana/kibana``.
+
+```bash
+
+  # https://github.com/elastic/kibana-docker
+  FROM docker.elastic.co/kibana/kibana:5.4.3
+
+  # Remove X-Pack
+  RUN kibana-plugin remove x-pack
+
+  # Install other plugins with
+  # RUN kibana-plugin install <name|url>
+```
+
+Change the number at the end of the line ``FROM docker.elastic.co/kibana/kibana:5.4.3`` to match the version of Kibana you'd like to use. You can see which versions of Kibana are compatible with your version of Elasticsearch in the official Elastic [support matrix](https://www.elastic.co/support/matrix#show_compatibility) .
+
 ### ObjectRocket ACLs
 
 Make sure that you have an elasticsearch ACL set up to allow you to connect from your local machine. From the ObjectRocket UI:
