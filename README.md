@@ -3,40 +3,52 @@ A Dockerized local install of Kibana that can be used to connect to an ObjectRoc
 
 ## Requirements
 
-* docker version **1.10.0+**
-* docker-compose version **1.6.0+**
+* docker version **17.05.0+**
+* docker-compose version **1.12.0+**
+
+> Earlier versions of docker/docker-compose will work, but you may need to change the Dockerfile to replace the `${KB_VER}` with the specific version you want at the end of the `FROM docker.elastic.co/kibana/kibana:${KB_VER}` line.
 
 ## Setup
 
 First clone this repo to your local machine
 
-### kibana.yml
+### Configuration Settings
 
-In the newly cloned repo, the Kibana configuration file is ``local-kibana/kibana/config/kibana.yml``. You'll need to update the included version with:
+The repo now makes all required configuration via the `docker-compose.yml` file, so the minimum required settings can all be made in one place. The default version of this file is below:
 
-- `elasticsearch.url` : One of the https connection strings (NOT the provided Kibana string) from the ObjectRocket UI
-- `elasticsearch.username` : A Username and password as configured in the ObjectRocket UI
-- `elasticsearch.password` : Any other kibana settings you'd like to tweak (like a different kibana.index)
+```yaml
+version: '2'
+
+services:
+  kibana:
+    build:
+      context: kibana/
+      args:
+        KB_VER: '5.5.1'
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config
+    environment:
+      SERVER_NAME: "kibana"
+      SERVER_HOST: '"0"'
+      ELASTICSEARCH_URL: 'https://ord2-18249-3.es.objectrocket.com:28249'
+      ELASTICSEARCH_USERNAME: 'esadmin'
+      ELASTICSEARCH_PASSWORD: 'ch4ngem3'
+    ports:
+      - "5601:5601"
+```
+
+The settings you will need to change are:
+
+- **KB_VER** : This is the version of KIbana you'd like. You can see which versions of Kibana are compatible with your version of Elasticsearch in the official Elastic [support matrix](https://www.elastic.co/support/matrix#show_compatibility) .
+- **ELASTICSEARCH_URL** : One of the https connection strings (NOT the provided Kibana string) from the ObjectRocket UI
+- **ELASTICSEARCH_USERNAME** : A Username and password as configured in the ObjectRocket UI
+- **ELASTICSEARCH_PASSWORD** : Any other kibana settings you'd like to tweak (like a different kibana.index)
 
 > Kibana can only accept a single host for the elasticsearch url. It is not able to round-robin, like other elasticsearch clients, so you'll need to take the list of hosts provided in the ObjectRocket UI and select only one host to use for the local Kibana instance.
 
-### Kibana Version
+### kibana.yml
 
-The default version of Kibana used in the repo is 5.4.3. If you're using a different/non-compatible version of Elasticsearch, you can change to the appropriate version by editing the ``Dockerfile`` in ``local-kibana/kibana``.
-
-```bash
-
-  # https://github.com/elastic/kibana-docker
-  FROM docker.elastic.co/kibana/kibana:5.4.3
-
-  # Remove X-Pack
-  RUN kibana-plugin remove x-pack
-
-  # Install other plugins with
-  # RUN kibana-plugin install <name|url>
-```
-
-Change the number at the end of the line ``FROM docker.elastic.co/kibana/kibana:5.4.3`` to match the version of Kibana you'd like to use. You can see which versions of Kibana are compatible with your version of Elasticsearch in the official Elastic [support matrix](https://www.elastic.co/support/matrix#show_compatibility) .
+The Kibana configuration file is ``local-kibana/kibana/config/kibana.yml``. In the latest version of this repo, the required settings should all be configured in the `environment` section of the `docker-compose.yml` file. However, the file remains in the repo to use if you want to make further customizations. Just note that the environment variables will override the settings in the `kibana.yml` file.
 
 ### ObjectRocket ACLs
 
