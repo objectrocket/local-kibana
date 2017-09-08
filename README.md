@@ -30,9 +30,9 @@ services:
     environment:
       SERVER_NAME: "kibana"
       SERVER_HOST: '"0"'
-      ELASTICSEARCH_URL: 'https://ord2-18249-3.es.objectrocket.com:28249'
-      ELASTICSEARCH_USERNAME: 'esadmin'
-      ELASTICSEARCH_PASSWORD: 'ch4ngem3'
+      ELASTICSEARCH_URL: 'https://dc-port-id.es.objectrocket.com:port'
+      ELASTICSEARCH_USERNAME: 'myuser'
+      ELASTICSEARCH_PASSWORD: 'mypassword'
     ports:
       - "5601:5601"
 ```
