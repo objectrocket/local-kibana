@@ -4,7 +4,15 @@ services:
   kibana:
     build:
       context: kibana/
+      args:
+        KB_VER: '5.5.1'
     volumes:
       - ./kibana/config/:/usr/share/kibana/config
+    environment:
+      SERVER_NAME: "kibana"
+      SERVER_HOST: '"0"'
+      ELASTICSEARCH_URL: 'https://your-host.es.objectrocket.com:yourport'
+      ELASTICSEARCH_USERNAME: 'youruser'
+      ELASTICSEARCH_PASSWORD: 'yourpassword'
     ports:
       - "5601:5601"

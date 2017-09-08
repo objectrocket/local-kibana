@@ -2,8 +2,10 @@
 ## Default Kibana configuration from kibana-docker.
 ## from https://github.com/elastic/kibana-docker/blob/master/build/kibana/config/kibana.yml
 #
-server.name: kibana
-server.host: "0"
-elasticsearch.url: "https://your-host.es.objectrocket.com:yourport"
-elasticsearch.username: "youruser"
-elasticsearch.password: "yourpassword"
+# All basic Kibana setting are now configured with environment variables in the docker-compose.yml file
+# Leaving this file in place for anyone that prefers to set things here
+#server.name: kibana
+#server.host: "0"
+#elasticsearch.url: "https://your-host.es.objectrocket.com:yourport"
+#elasticsearch.username: "youruser"
+#elasticsearch.password: "yourpassword"
